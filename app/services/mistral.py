@@ -1,16 +1,20 @@
-from langchain_mistralai import ChatMistralAI
-from langchain.schema import HumanMessage
-from app.config import Config  # ensure Config is correctly imported
+import os
+from langchain_mistralai.chat_models import ChatMistralAI
+
 class MistralService:
     def __init__(self):
-        self.client = ChatMistralAI(
-            api_key=Config().mistral_key,
-            model="mistral-large-latest",  # verify model identifier per docs
+        self.api_key = os.getenv('MISTRAL_API_KEY')
+        if not self.api_key:
+            raise ValueError("MISTRAL_API_KEY not found in environment variables")
+    
+    def get_model(self):
+        return ChatMistralAI(
+            mistral_api_key=self.api_key,
+            model="mistral-tiny",
             temperature=0.7,
             max_tokens=2000
         )
-    
-    def generate_text(self, prompt: str) -> str:
-        messages = [HumanMessage(content=prompt)]
-        result = self.client.invoke(messages)  # use invoke method for chat models
-        return result.content  # assuming the result object has a 'content' attribute
+
+    def generate_content(self, prompt: str) -> str:
+        model = self.get_model()
+        return model.predict(prompt)

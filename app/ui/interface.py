@@ -1,32 +1,15 @@
-# ui/gradio_interface.py
 import gradio as gr
 import logging
-import os
-import sys
 from typing import List, Any
-
-# Add the project root directory to Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-sys.path.insert(0, project_root)
-
 from app.utils.validators import ContentValidator
 from app.agents.content_agent import ContentAgent
 from app.agents.image_agent import ImageAgent
 from app.agents.video_agent import VideoAgent
-from services.mistral import generate_content
-from services.elevenlabs import text_to_speech
-from services.recraft import generate_image
-from services.fal_ai import generate_video
-
-import os
-from posthog import Posthog
-
-# POSTHOG_KEY is stored in environment variables
-posthog_key = os.getenv('POSTHOG_KEY')
-posthog_url = os.getenv('POSTHOG_URL')
-posthog = Posthog(posthog_key, host=posthog_url)
+from app.agents.audio_agent import AudioAgent
+from app.utils.error_handling import ErrorHandler
 
 logger = logging.getLogger(__name__)
+error_handler = ErrorHandler()
 
 def start_generation_workflow(age: int, prompt: str) -> List[Any]:
     try:
@@ -43,38 +26,61 @@ def start_generation_workflow(age: int, prompt: str) -> List[Any]:
             "audio": "Waiting..."
         }
         
-        # Generate content
+        # Generate content using error handler
         content_agent = ContentAgent()
-        content = content_agent.generate_content(age, prompt)
+        content = error_handler.api_call_with_retry(
+            content_agent.generate_content,
+            age, 
+            prompt
+        )
         progress["content"] = "Content generated successfully"
         progress["images"] = "Generating images..."
         
         # Generate images
         image_agent = ImageAgent()
-        images = image_agent.generate_images(content, age)
+        images = error_handler.api_call_with_retry(
+            image_agent.generate_images,
+            content, 
+            age
+        )
         progress["images"] = "Images generated successfully"
         progress["video"] = "Generating video..."
         
         # Generate video
         video_agent = VideoAgent()
-        video = video_agent.generate_video(content, age)
+        video = error_handler.api_call_with_retry(
+            video_agent.generate_video,
+            content, 
+            age
+        )
         progress["video"] = "Video generated successfully"
+        
+        # Generate audio
+        audio_agent = AudioAgent()
+        audio = error_handler.api_call_with_retry(
+            audio_agent.generate_audio,
+            content, 
+            age
+        )
+        progress["audio"] = "Audio generated successfully"
         
         return [
             gr.update(value=progress["content"]),
+            gr.update(value=progress["audio"]),
             gr.update(value=progress["images"]),
             gr.update(value=progress["video"]),
             gr.update(value=content),
+            gr.update(value=audio),
             gr.update(value=images),
             gr.update(value=video)
         ]
         
     except ValueError as ve:
         logger.warning(f"Validation error: {str(ve)}")
-        return [gr.update(value=f"Error: {str(ve)}")] * 6
+        return [gr.update(value=f"Error: {str(ve)}")] * 8
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
-        return [gr.update(value="An unexpected error occurred")] * 6
+        return [gr.update(value="An unexpected error occurred")] * 8
 
 def create_interface():
     with gr.Blocks(title="EduContent Generator") as demo:
@@ -89,20 +95,30 @@ def create_interface():
             prompt_input = gr.Textbox(
                 label="Lesson Prompt",
                 max_length=250,
-                placeholder="Enter educational content prompt to guide the AI agents to create video (max 250 words)"
+                placeholder="Enter educational content prompt (max 250 characters)"
             )
         
         submit_btn = gr.Button("Generate Content", variant="primary")
         
-        with gr.Accordion("Generation Progress", open=False):
+        with gr.Accordion("Generation Progress", open=True):
             text_status = gr.Textbox(label="Content Generation", interactive=False)
             audio_status = gr.Textbox(label="Audio Generation", interactive=False)
             image_status = gr.Textbox(label="Image Generation", interactive=False)
             video_status = gr.Textbox(label="Video Generation", interactive=False)
+        
+        with gr.Accordion("Generated Content", open=True):
+            content_output = gr.Textbox(label="Generated Text", interactive=False)
+            audio_output = gr.Audio(label="Generated Audio")
+            image_output = gr.Gallery(label="Generated Images")
+            video_output = gr.Video(label="Generated Video")
 
         submit_btn.click(
             fn=start_generation_workflow,
             inputs=[age_dropdown, prompt_input],
-            outputs=[text_status, audio_status, image_status, video_status]
+            outputs=[
+                text_status, audio_status, image_status, video_status,
+                content_output, audio_output, image_output, video_output
+            ]
         )
+    
     return demo

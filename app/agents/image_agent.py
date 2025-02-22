@@ -3,7 +3,7 @@ import logging
 from typing import List
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
-from services.recraft import RecraftService
+from app.services.recraft import RecraftService
 
 logger = logging.getLogger(__name__)
 

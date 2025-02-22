@@ -1,5 +1,5 @@
 # agents/audio_agent.py
-from services.elevenlabs import ElevenLabsService
+from app.services.elevenlabs import ElevenLabsService
 
 class AudioAgent:
     def __init__(self):

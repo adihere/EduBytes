@@ -1,13 +1,13 @@
-python-dotenv==1.0.0
-numpy==1.25.1
-sentence_transformers==2.2.2
+python-dotenv
+numpy
+sentence_transformers
 gradio
 langchain
-crewai>=0.28.8
-crewai_tools>=0.1.6
-langchain_community==0.0.29
+crewai
+crewai_tools
+langchain_community
 transformers  
-langchain_mistralai # For Mistral 
+langchain-mistralai
 torch  # If you're using a GPU for Mistral 7B
 accelerate # Required by transformers for quickly load LLMs.
 elevenlabs

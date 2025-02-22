@@ -1,5 +1,5 @@
 # agents/video_agent.py
-from services.fal_ai import FalService
+from app.services.fal_ai import FalService
 
 class VideoAgent:
     def __init__(self):
