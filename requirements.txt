@@ -1,8 +1,17 @@
-gradio==4.4.0
 python-dotenv==1.0.0
-Pillow==10.0.0
-langchain==0.0.300
-posthog==3.0.2
-pytest==7.4.2
-requests==2.31.0
-python-magic==0.4.27
+numpy==1.25.1
+sentence_transformers==2.2.2
+gradio
+langchain
+crewai>=0.28.8
+crewai_tools>=0.1.6
+langchain_community==0.0.29
+transformers  
+langchain_mistralai # For Mistral 
+torch  # If you're using a GPU for Mistral 7B
+accelerate # Required by transformers for quickly load LLMs.
+elevenlabs
+moviepy # For video editing and combining elements
+posthog  # For monitoring
+fal
+

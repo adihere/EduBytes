@@ -1,7 +1,14 @@
 # ui/gradio_interface.py
 import gradio as gr
 import logging
+import os
+import sys
 from typing import List, Any
+
+# Add the project root directory to Python path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.insert(0, project_root)
+
 from app.utils.validators import ContentValidator
 from app.agents.content_agent import ContentAgent
 from app.agents.image_agent import ImageAgent
