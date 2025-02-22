@@ -4,6 +4,13 @@ import logging
 from dotenv import load_dotenv
 from typing import Optional
 
+# Client and server settings
+PORT_APP = 1116
+SERVER_HOST = "0.0.0.0"
+
+# UI settings
+ICON_IMAGE_PATH = "./images/edubyte.jpg"
+
 class Config:
     def __init__(self):
         load_dotenv()

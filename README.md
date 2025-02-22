@@ -70,10 +70,27 @@ Access the web interface at `http://localhost:7860`
 ```
 EduBytes/
 ├── app/
-│   ├── agents/           # AI agents for different content types
-│   ├── services/         # External API integrations
-│   └── ui/              # User interface components
-├── app.py               # Main application entry point
+│   ├── agents/
+│   │   ├── __init__.py
+│   │   ├── audio_agent.py
+│   │   ├── content_agent.py
+│   │   ├── image_agent.py
+│   │   └── video_agent.py
+│   ├── services/
+│   │   └── __init__.py
+│   ├── ui/
+│   │   ├── __init__.py
+│   │   └── interface.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── error_handling.py
+│       ├── optimization.py
+│       └── validators.py
+├── tests/
+│   └── __init__.py
+├── .env
+├── app.py
+├── requirements.txt
 └── README.md
 ```
 
