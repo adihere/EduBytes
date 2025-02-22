@@ -22,8 +22,8 @@ class Config:
         # API Keys
         self.mistral_key: Optional[str] = os.getenv("MISTRAL_API_KEY")
         self.elevenlabs_key: Optional[str] = os.getenv("ELEVENLABS_API_KEY")
-        self.fal_key: Optional[str] = os.getenv("FAL_API_KEY")
-        self.recraft_key: Optional[str] = os.getenv("RECRAFT_API_KEY")
+        self.fal_key: Optional[str] = os.getenv("FAL_KEY")
+
         
         # Validate API keys
         self._validate_config()
@@ -36,8 +36,7 @@ class Config:
         for key, value in {
             "MISTRAL_API_KEY": self.mistral_key,
             "ELEVENLABS_API_KEY": self.elevenlabs_key,
-            "FAL_API_KEY": self.fal_key,
-            "RECRAFT_API_KEY": self.recraft_key
+            "FAL_API_KEY": self.fal_key
         }.items():
             if not value:
                 missing_keys.append(key)

@@ -18,8 +18,7 @@ This project aims to bridge the gap between parental , school lessons and childr
 - API keys for:
   - Mistral AI
   - ElevenLabs
-  - Fal.ai
-  - Recraft.ai
+  - Fal.ai  
 
 ## Installation
 
@@ -45,8 +44,7 @@ This project aims to bridge the gap between parental , school lessons and childr
     ```env
     MISTRAL_API_KEY=your_mistral_api_key
     ELEVENLABS_API_KEY=your_elevenlabs_api_key
-    FAL_API_KEY=your_fal_api_key
-    RECRAFT_API_KEY=your_recraft_api_key
+    FAL_KEY=your_fal_key    
     POSTHOG_KEY=your_posthog_key
     POSTHOG_URL=your_posthog_url
     ```

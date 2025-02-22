@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 class FalService:
     def __init__(self):
         """Initialize the FAL service with API key from environment variables."""
-        self.api_key = os.getenv('FAL_API_KEY')
+        self.api_key = os.getenv('FAL_KEY')
         if not self.api_key:
-            raise ValueError("FAL_API_KEY not found in environment variables")
+            raise ValueError("FAL_KEY not found in environment variables")
         fal_client.api_key = self.api_key
 
     def _log_progress(self, update: Any) -> None:
