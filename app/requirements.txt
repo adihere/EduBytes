@@ -8,3 +8,11 @@ langchain-mistral
 crewai==0.28.8
 crewai_tools==0.1.6
 langchain_community==0.0.29
+transformers  # For Mistral 7B
+torch  # If you're using a GPU for Mistral 7B
+accelerate # Required by transformers for quickly load LLMs.
+elevenlabs
+moviepy # For video editing and combining elements
+posthog  # For monitoring
+# Add fal-client or other libraries needed for fal.ai if required
+# Add recraft-api-client or any specific Recraft API library if needed
