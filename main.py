@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from app.ui.interface import create_interface
 
-from app.config import Config
+from app.config import Config, PORT_APP
 
 def setup_logging():
     logging.basicConfig(
@@ -32,7 +32,7 @@ def main():
         demo = create_interface()
         demo.launch(
             server_name="0.0.0.0", 
-            server_port=7860,
+            server_port=PORT_APP,
             share=True  # Enable sharing via public URL
         )
     except Exception as e:

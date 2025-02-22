@@ -9,7 +9,7 @@ PORT_APP = 1116
 SERVER_HOST = "0.0.0.0"
 
 # UI settings
-ICON_IMAGE_PATH = "./images/edubyte.jpg"
+ICON_IMAGE_PATH = "./images/edubyte.gif"
 
 class Config:
     def __init__(self):
