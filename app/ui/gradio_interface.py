@@ -5,6 +5,13 @@ from services.elevenlabs import text_to_speech
 from services.recraft import generate_image
 from services.fal_ai import generate_video
 
+import os
+from posthog import Posthog
+
+# POSTHOG_KEY is stored in environment variables
+posthog_key = os.getenv('POSTHOG_KEY')
+posthog_url = os.getenv('POSTHOG_URL')
+posthog = Posthog(posthog_key, host=posthog_url)
 
 def start_generation_workflow(age: int, prompt: str):
     validate = ContentValidator.validate_prompt(prompt)

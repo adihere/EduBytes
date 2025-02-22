@@ -50,14 +50,11 @@ project_root/
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── fal_ai.py
-│   │   ├── recraft.py
 │   │   ├── mistral.py
 │   │   └── elevenlabs.py
 │   └── utils/
 │       ├── __init__.py
 │       └── helpers.py
-├── models/
-│   └── mistral-7b/
 ├── data/
 │   ├── raw/
 │   ├── processed/

@@ -1,18 +1,17 @@
 python-dotenv==1.0.0
 numpy==1.25.1
 sentence_transformers==2.2.2
-gradio==4.44.1
-huggingface-hub==0.19.4
+gradio
 langchain
-langchain-mistral
-crewai==0.28.8
-crewai_tools==0.1.6
+crewai>=0.28.8
+crewai_tools>=0.1.6
 langchain_community==0.0.29
-transformers  # For Mistral 7B
+transformers  
+langchain_mistralai # For Mistral 
 torch  # If you're using a GPU for Mistral 7B
 accelerate # Required by transformers for quickly load LLMs.
 elevenlabs
 moviepy # For video editing and combining elements
 posthog  # For monitoring
-# Add fal-client or other libraries needed for fal.ai if required
-# Add recraft-api-client or any specific Recraft API library if needed
+fal
+
