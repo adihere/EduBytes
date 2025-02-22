@@ -13,5 +13,6 @@ accelerate # Required by transformers for quickly load LLMs.
 elevenlabs
 moviepy # For video editing and combining elements
 posthog  # For monitoring
-fal
+fal-client
+typing
 
