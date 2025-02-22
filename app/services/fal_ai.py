@@ -33,7 +33,7 @@ class FalService:
         """
         try:
             result = fal_client.subscribe(
-                "fal-ai/flux-vid/dev",
+                "fal-ai/kling-video/v1.6/standard/text-to-video",
                 arguments={
                     "prompt": prompt,
                     "num_frames": duration * 30,  # 30fps
