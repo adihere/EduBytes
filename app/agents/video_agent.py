@@ -10,7 +10,5 @@ class VideoAgent:
         illustrating: {text}"""
         return self.service.generate_video(
             prompt=prompt,
-            duration=5,
-            model="kling-1.6-pro",
-            resolution="1024x576"
+            duration=5
         )
