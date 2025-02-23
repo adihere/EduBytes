@@ -1,10 +1,12 @@
 # EduBytes
-EduBytes: AI-Powered Parent-to-Child Learning
+EduBytes: AI-Powered Parent-to-Child Learning   
 
 EduBytes represents a paradigm shift in educational technology by empowering parents to co-create dynamic learning experiences with their children. 
 This AI-driven platform combines multimodal content generation with adaptive learning mechanics to address critical gaps in modern education systems. 
 By integrating parent insights, school curricula, and neurodiverse learning needs, EduBytes establishes a new standard for personalized education. 
 This project also aims to bridge the gap between parental , school lessons and children's learning, making education more comprehensive and focused.
+
+(Created for the ElevenLabs x 16z Worldwide Hackathon )
 
 ## Features
 At its core is a Multimodal Content Generation Engine
