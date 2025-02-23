@@ -10,7 +10,7 @@ class MistralService:
     def get_model(self):
         return ChatMistralAI(
             mistral_api_key=self.api_key,
-            model="mistral-tiny",
+            model="mistral-large-latest",   #Use latest model for educational content generation 
             temperature=0.7,
             max_tokens=2000
         )
