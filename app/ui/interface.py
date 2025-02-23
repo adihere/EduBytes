@@ -28,6 +28,15 @@ custom_css = """
         margin: 0 auto;
         padding: 20px;
     }
+
+    .small-accordion .gr-accordion-header {
+        font-size: 0.8em;
+        padding: 0.5em;
+    }
+
+.small-accordion .gr-accordion-body {
+    padding: 0.5em;
+}
     
     .banner-image {
         display: block;
@@ -202,7 +211,7 @@ def create_interface():
                 container=False,
                 elem_classes="banner-image"
             )
-        gr.Markdown("## AI-Powered Educational Content Creator")
+        gr.Markdown("## EduBytes: Revolutionizing Parent-Child Learning Through AI-Powered Personalization")
         
         with gr.Row():
             age_dropdown = gr.Dropdown(
@@ -231,15 +240,16 @@ def create_interface():
         
         submit_btn = gr.Button("Generate Content", variant="primary")
         
-        with gr.Accordion("Generation Progress", open=True):
-            text_status = gr.Textbox(label="Content Generation", interactive=False)
-            audio_status = gr.Textbox(label="Audio Generation", interactive=False)
-            image_status = gr.Textbox(label="Image Generation", interactive=False)
-            video_status = gr.Textbox(label="Video Generation", interactive=False)
-        
+        with gr.Accordion("Generation Progress", open=True, elem_classes="small-accordion"):
+            with gr.Row():
+                text_status = gr.Textbox(label="Content Generation", interactive=False)
+                audio_status = gr.Textbox(label="Audio Generation", interactive=False)
+                image_status = gr.Textbox(label="Image Generation", interactive=False)
+                video_status = gr.Textbox(label="Video Generation", interactive=False)
+
         with gr.Accordion("Generated Content", open=True):
-            content_output = gr.Textbox(label="Generated Text", interactive=False)
-            audio_output = gr.Audio(label="Generated Audio")
+            content_output = gr.Textbox(label="Generated Learning Text", interactive=False)
+            audio_output = gr.Audio(label="Audio Bytes", interactive=False)
             # Combined gallery for images and video
             media_output = gr.Gallery(
                 label="Generated Media",
