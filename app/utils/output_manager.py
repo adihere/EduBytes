@@ -48,6 +48,14 @@ class OutputManager:
     @staticmethod
     def save_audio_output(request_id: str, audio_data: bytes) -> str:
         """Save audio content to file."""
+        if audio_data is None:
+            logger.warning("No audio data received")
+            return ""
+            
+        if not isinstance(audio_data, bytes):
+            logger.error(f"Invalid audio data type: {type(audio_data)}")
+            return ""
+            
         output_path = os.path.join(OutputManager.OUTPUT_DIR, request_id, 'audio', 'audio.mp3')
         try:
             with open(output_path, 'wb') as f:
@@ -56,7 +64,7 @@ class OutputManager:
             return output_path
         except Exception as e:
             logger.error(f"Failed to save audio content: {str(e)}")
-            raise
+            return ""
 
     @staticmethod
     def save_images_output(request_id: str, images: List[Image.Image]) -> List[str]:

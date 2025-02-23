@@ -53,20 +53,28 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False)
             content, 
             age
         )
-        # Save generated images using OutputManager
         image_paths = OutputManager.save_images_output(request_id, images)
         progress["images"] = f"Images generated successfully and saved to {output_paths['images']}"
         progress["video"] = "Generating video..."
         
-        # Generate audio
+        # Generate audio and save it
         audio_agent = AudioAgent()
         audio = error_handler.api_call_with_retry(
             audio_agent.generate_audio,
             content, 
             age
         )
-        progress["audio"] = "Audio generated successfully"
         
+        if audio is None:
+            progress["audio"] = "Audio generation failed"
+            audio_path = ""
+        else:
+            audio_path = OutputManager.save_audio_output(request_id, audio)
+            if audio_path:
+                progress["audio"] = f"Audio generated successfully and saved to {output_paths['audio']}"
+            else:
+                progress["audio"] = "Failed to save audio output"
+
         # Conditionally generate video with request_id
         video = None
         if video_needed:
@@ -89,8 +97,8 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False)
             gr.update(value=progress["images"]),
             gr.update(value=progress["video"]),
             gr.update(value=content),
-            gr.update(value=audio),
-            gr.update(value=image_paths),  # Return saved image paths instead of raw images
+            gr.update(value=audio_path if audio_path else None),  # Only return path if valid
+            gr.update(value=image_paths),
             gr.update(value=video if video_needed else None)
         ]
         
