@@ -32,7 +32,7 @@ class ImageAgent:
             images = []
             
             for keyword in keywords[:5]:
-                prompt = f"Educational illustration for {age} year olds about {keyword}, digital art style, cute and friendly, colorful"
+                prompt = f"Educational illustration for {age} year olds about {keyword}, digital art style,  friendly, colorful"
                 try:
                     # Get image URLs from FalService
                     image_urls = self.service.generate_images(
