@@ -33,7 +33,7 @@ def main():
         demo.launch(
             server_name="0.0.0.0", 
             server_port=PORT_APP,
-            share=True  # Enable sharing via public URL
+            share=False  # Always Disable sharing via public URL
         )
     except Exception as e:
         logger.error(f"Application failed to start: {str(e)}")
