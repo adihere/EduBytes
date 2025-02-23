@@ -24,14 +24,16 @@ Enhancing Teacher-Parent Collaboration
 The platform's Shared Learning Dashboard (tbc) gives educators visibility into home learning activities, enabling targeted classroom reinforcement. 
 When a student struggles with decimal operations in school, teachers can review home-generated content to identify conceptual gaps and suggest complementary EduBytes module
 
-Multilayered Content Guardrails
+Multilayered Content Guardrails  (tbc)
 EduBytes aims to integrate guardrails by leveraging tools such as Amazon Bedrock's security tools or similar 
 
-Reusable Content Ecosystem
+Reusable Content Ecosystem  (tbc)
 EduBytes plans to launch a GitHub-style repository where parents can:
 Fork and Remix existing lessons 
-Version Control educational materials as children progress through skill levels
 Collaborative Development tools for multi-parent content creation team
+
+Learning Byte Studio (tbc)
+Teacher-focused interface for creating 3-5 minute review materials aligned with classroom lessons
 
 ## Prerequisites
 
