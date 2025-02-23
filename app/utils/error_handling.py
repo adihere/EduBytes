@@ -16,7 +16,7 @@ def handle_api_errors(func):
     return wrapper
 
 class ErrorHandler:
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    @retry(stop=stop_after_attempt(2), wait=wait_exponential(multiplier=1, min=4, max=10))
     def api_call_with_retry(self, func, *args, **kwargs):
         try:
             return func(*args, **kwargs)

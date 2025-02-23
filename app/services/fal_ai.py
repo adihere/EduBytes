@@ -43,9 +43,10 @@ class FalService:
                 on_queue_update=self._log_progress
             )
             
-            if isinstance(result, Dict) and 'video_url' in result:
-                logger.info(f"Video generated successfully: {result['video_url']}")
-                return result['video_url']
+            if isinstance(result, Dict) and 'video' in result and 'url' in result['video']:
+                video_url = result['video']['url']
+                logger.info(f"Video generated successfully: {video_url}")
+                return video_url
             else:
                 logger.error(f"Unexpected result format from video generation: {result}")
                 raise ValueError(f"Invalid result format from video generation API")
