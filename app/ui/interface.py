@@ -238,7 +238,7 @@ def create_interface():
                 info="Generate educational illustrations"
             )
         
-        submit_btn = gr.Button("Generate Content", variant="primary")
+        submit_btn = gr.Button("Generate Content", variant="primary",min_width="250px")
         
         with gr.Accordion("Generation Progress", open=True, elem_classes="small-accordion"):
             with gr.Row():
@@ -248,11 +248,11 @@ def create_interface():
                 video_status = gr.Textbox(label="Video Generation", interactive=False)
 
         with gr.Accordion("Generated Content", open=True):
-            content_output = gr.Textbox(label="Generated Learning Text", interactive=False)
+            content_output = gr.Textbox(label="Generated Learning Text", interactive=False,lines=6)
             audio_output = gr.Audio(label="Audio Bytes", interactive=False)
             # Combined gallery for images and video
             media_output = gr.Gallery(
-                label="Generated Media",
+                label="Multi-modal Media",
                 show_label=True,
                 elem_id="media_gallery",
                 columns=[2],

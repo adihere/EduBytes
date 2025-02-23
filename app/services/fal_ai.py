@@ -7,6 +7,9 @@ from typing import Optional, Dict, Any, List
 logger = logging.getLogger(__name__)
 
 class FalService:
+    # Constants
+    MAX_PROMPT_LENGTH = 2500
+
     def __init__(self):
         """Initialize the FAL service with API key from environment variables."""
         self.api_key = os.getenv('FAL_KEY')
@@ -20,6 +23,13 @@ class FalService:
             for log in update.logs:
                 logger.info(f"Fal-AI Progress: {log['message']}")
 
+    def _validate_and_truncate_prompt(self, prompt: str) -> str:
+        """Validate and truncate prompt to meet API requirements."""
+        if len(prompt) > self.MAX_PROMPT_LENGTH:
+            logger.warning(f"Prompt exceeds max length ({len(prompt)}). Truncating to {self.MAX_PROMPT_LENGTH} characters.")
+            return prompt[:self.MAX_PROMPT_LENGTH]
+        return prompt
+
     def generate_video(self, prompt: str, duration: int = 5) -> str:
         """
         Generate a video based on the provided prompt.
@@ -32,6 +42,9 @@ class FalService:
             str: URL of the generated video
         """
         try:
+            # Validate and truncate prompt
+            prompt = self._validate_and_truncate_prompt(prompt)
+            
             result = fal_client.subscribe(
                 "fal-ai/kling-video/v1.6/standard/text-to-video",
                 arguments={

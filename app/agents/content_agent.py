@@ -9,8 +9,16 @@ class ContentAgent:
         self.prompt_template = PromptTemplate(
             input_variables=["age", "prompt"],
             template="""Generate educational content for {age}-year-olds about: {prompt}
-            Use simple language with concrete examples. Include 3 key learning points 
-            and 2 interactive questions. Limit to 200-300 words."""
+            Limit to 200-300 words.
+            Use simple language with concrete examples
+            Include a scenario showing real-world application 
+            Example format: "Imagine... [scenario]..."             
+            Provide Logical explanation using {age}-appropriate metaphors, analogies, or stories                                
+            Include one Cross-Cultural Example Alternative to show different perspective
+                     
+            Vocabulary has to be constrained to {age}+2 grade level
+            
+            """
         )
     
     def generate_content(self, age: int, prompt: str) -> str:

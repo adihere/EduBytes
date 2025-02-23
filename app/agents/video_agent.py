@@ -10,8 +10,9 @@ class VideoAgent:
     
     def generate_video(self, text: str, age: int, request_id: str = None) -> str:
         try:
-            prompt = f"""Create a 5-second educational animation for {age}-year-olds 
-            illustrating: {text}"""
+            # Create a more concise prompt
+            text_summary = text[:500] if len(text) > 500 else text
+            prompt = f"Five second Educational video for age {age}: {text_summary}"
             
             # Generate video and get URL
             video_url = self.service.generate_video(
