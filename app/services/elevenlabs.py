@@ -14,24 +14,26 @@ class ElevenLabsService:
             # Get available voices
             voices_response = self.client.voices.get_all()
             voices = voices_response.voices  # Access the 'voices' attribute
-            
-            # Find the requested voice or use the first available one
-            selected_voice = next(
-                (v for v in voices if v.name.lower() == voice.lower()), 
-                voices[0] if voices else None
-            )
+
+            # Use the first available one
+            selected_voice = voices[0]        
             
             if not selected_voice:
-                raise ValueError(f"Voice '{voice}' not found and no default voice available")
+                raise ValueError(f"Voice '{voice}' not founde")
             
             # Generate audio using the selected voice 
-             
+
+           # Generate audio using the selected voice
             audio_generator = self.client.text_to_speech.convert(
                 text=text,
                 voice_id=selected_voice.voice_id,
                 model_id="eleven_multilingual_v2",
                 output_format="mp3_44100_128",
             )
+            
+            # Consume the generator and return bytes
+            return b''.join(chunk for chunk in audio_generator)
+            
             
         except Exception as e:
             raise Exception(f"Text-to-speech generation failed: {str(e)}")

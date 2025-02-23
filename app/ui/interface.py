@@ -12,7 +12,7 @@ from app.utils.output_manager import OutputManager
 logger = logging.getLogger(__name__)
 error_handler = ErrorHandler()
 
-def start_generation_workflow(age: int, prompt: str, video_needed: bool = False) -> List[Any]:
+def start_generation_workflow(age: int, prompt: str, video_needed: bool = False, images_needed: bool = False) -> List[Any]:
     try:
         # Convert age to integer
         age = int(age)
@@ -44,19 +44,23 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False)
         )
         content_path = OutputManager.save_text_output(request_id, content)
         progress["content"] = "Content generated successfully"
-        progress["images"] = "Generating images..."
         
-        # Generate images
-        image_agent = ImageAgent()
-        images = error_handler.api_call_with_retry(
-            image_agent.generate_images,
-            content, 
-            age
-        )
-        image_paths = OutputManager.save_images_output(request_id, images)
-        progress["images"] = f"Images generated successfully and saved to {output_paths['images']}"
-        progress["video"] = "Generating video..."
-        
+        # Conditionally generate images
+        images = []
+        image_paths = []
+        if images_needed:
+            progress["images"] = "Generating images..."
+            image_agent = ImageAgent()
+            images = error_handler.api_call_with_retry(
+                image_agent.generate_images,
+                content, 
+                age
+            )
+            image_paths = OutputManager.save_images_output(request_id, images)
+            progress["images"] = f"Images generated successfully and saved to {output_paths['images']}"
+        else:
+            progress["images"] = "Image generation skipped"
+
         # Generate audio and save it
         audio_agent = AudioAgent()
         audio = error_handler.api_call_with_retry(
@@ -132,6 +136,11 @@ def create_interface():
                 value=False,
                 info="Generate a short educational video (takes longer)"
             )
+            images_checkbox = gr.Checkbox(
+                label="Generate Images",
+                value=True,
+                info="Generate educational illustrations"
+            )
         
         submit_btn = gr.Button("Generate Content", variant="primary")
         
@@ -149,7 +158,7 @@ def create_interface():
 
         submit_btn.click(
             fn=start_generation_workflow,
-            inputs=[age_dropdown, prompt_input, video_checkbox],
+            inputs=[age_dropdown, prompt_input, video_checkbox, images_checkbox],
             outputs=[
                 text_status, audio_status, image_status, video_status,
                 content_output, audio_output, image_output, video_output
