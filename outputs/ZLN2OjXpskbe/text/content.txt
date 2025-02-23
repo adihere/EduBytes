@@ -1,0 +1,15 @@
+Title: Meeting Ada Lovelace: The First Lady of Coding!
+
+Hello, young coders! Today, we're going to meet a very special person from history who loved codes as much as you do! Her name is Ada Lovelace, and she's known as the first computer programmer!
+
+Key Learning Point 1: Ada Lovelace was born in London, England, in 1815. She was a brilliant mathematician and loved solving puzzles and codes. She even wrote poetry about mathematics!
+
+Key Learning Point 2: When Ada was 18, she met Charles Babbage, a famous scientist who wanted to build a machine that could solve mathematical problems. Ada helped Babbage by writing instructions for the machine, which we now call "programs." One of her programs was for a game, and it's considered the first computer algorithm!
+
+Key Learning Point 3: Ada Lovelace was an advocate for women in science and math. She believed that everyone, no matter their gender, should have the opportunity to learn and excel in these fields. Ada's work inspired many other women to become engineers, mathematicians, and scientists.
+
+Now, let's have some fun with Ada's world!
+
+Interactive Question 1: Imagine you're Ada Lovelace. Write a simple algorithm for a machine to draw a happy face. Don't forget to use numbers for steps!
+
+Interactive Question 2: Ada believed that everyone should have the chance to learn about codes and math. Do you think it's important for everyone to learn about coding? Why or why not? Share your thoughts with a friend!
