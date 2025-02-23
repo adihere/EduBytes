@@ -28,6 +28,15 @@ custom_css = """
         margin: 0 auto;
         padding: 20px;
     }
+
+    .small-accordion .gr-accordion-header {
+        font-size: 0.8em;
+        padding: 0.5em;
+    }
+
+.small-accordion .gr-accordion-body {
+    padding: 0.5em;
+}
     
     .banner-image {
         display: block;
@@ -139,8 +148,15 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False,
             else:
                 progress["audio"] = "Failed to save audio output"
 
-        # Conditionally generate video with request_id
-        video = None
+        # Store all media in a single list
+        media_files = []
+        
+        # Add images if generated
+        if images and image_paths:
+            media_files.extend(image_paths)
+            progress["images"] = f"Images generated successfully"
+        
+        # Add video if generated
         if video_needed:
             video_agent = VideoAgent()
             video = error_handler.api_call_with_retry(
@@ -149,7 +165,10 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False,
                 age,
                 request_id
             )
-            progress["video"] = "Video generated successfully"
+            video_path = OutputManager.save_video_output(request_id, video)
+            if video_path:
+                media_files.append(video_path)
+                progress["video"] = "Video generated successfully"
         else:
             progress["video"] = "Video generation skipped"
             
@@ -162,16 +181,15 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False,
             gr.update(value=progress["video"]),
             gr.update(value=content),
             gr.update(value=audio_path if audio_path else None),  # Only return path if valid
-            gr.update(value=image_paths),
-            gr.update(value=video if video_needed else None)
+            gr.update(value=media_files),  # Combined media files
         ]
         
     except ValueError as ve:
         logger.warning(f"Validation error: {str(ve)}")
-        return [gr.update(value=f"Error: {str(ve)}")] * 8
+        return [gr.update(value=f"Error: {str(ve)}")] * 7  # Updated count
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
-        return [gr.update(value="An unexpected error occurred")] * 8
+        return [gr.update(value="An unexpected error occurred")] * 7  # Updated count
 
 def create_interface():
     with gr.Blocks(
@@ -193,7 +211,7 @@ def create_interface():
                 container=False,
                 elem_classes="banner-image"
             )
-        gr.Markdown("## AI-Powered Educational Content Creator")
+        gr.Markdown("## EduBytes: Revolutionizing Parent-Child Learning Through AI-Powered Personalization")
         
         with gr.Row():
             age_dropdown = gr.Dropdown(
@@ -222,24 +240,35 @@ def create_interface():
         
         submit_btn = gr.Button("Generate Content", variant="primary")
         
-        with gr.Accordion("Generation Progress", open=True):
-            text_status = gr.Textbox(label="Content Generation", interactive=False)
-            audio_status = gr.Textbox(label="Audio Generation", interactive=False)
-            image_status = gr.Textbox(label="Image Generation", interactive=False)
-            video_status = gr.Textbox(label="Video Generation", interactive=False)
-        
+        with gr.Accordion("Generation Progress", open=True, elem_classes="small-accordion"):
+            with gr.Row():
+                text_status = gr.Textbox(label="Content Generation", interactive=False)
+                audio_status = gr.Textbox(label="Audio Generation", interactive=False)
+                image_status = gr.Textbox(label="Image Generation", interactive=False)
+                video_status = gr.Textbox(label="Video Generation", interactive=False)
+
         with gr.Accordion("Generated Content", open=True):
-            content_output = gr.Textbox(label="Generated Text", interactive=False)
-            audio_output = gr.Audio(label="Generated Audio")
-            image_output = gr.Gallery(label="Generated Images")
-            video_output = gr.Video(label="Generated Video")
+            content_output = gr.Textbox(label="Generated Learning Text", interactive=False)
+            audio_output = gr.Audio(label="Audio Bytes", interactive=False)
+            # Combined gallery for images and video
+            media_output = gr.Gallery(
+                label="Generated Media",
+                show_label=True,
+                elem_id="media_gallery",
+                columns=[2],
+                rows=[2],
+                height="auto",
+                allow_preview=True,
+                show_share_button=False,
+                show_download_button=True,
+            )
 
         submit_btn.click(
             fn=start_generation_workflow,
             inputs=[age_dropdown, prompt_input, video_checkbox, images_checkbox],
             outputs=[
                 text_status, audio_status, image_status, video_status,
-                content_output, audio_output, image_output, video_output
+                content_output, audio_output, media_output
             ]
         )
     
