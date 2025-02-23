@@ -7,7 +7,6 @@ crewai
 crewai_tools
 langchain_community
 transformers  
-langchain-mistralai
 torch  # If you're using a GPU for Mistral 7B
 accelerate # Required by transformers for quickly load LLMs.
 elevenlabs
@@ -16,4 +15,4 @@ posthog  # For monitoring
 fal-client
 typing
 mistralai
-
+langchain_mistralai
