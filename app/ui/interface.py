@@ -110,7 +110,7 @@ def create_interface():
                 label="Target Age",
                 choices=[str(i) for i in range(3, 17)],
                 value="10",
-                type="number"  # Specify number type
+                type="value"  # Changed from "number" to "value"
             )
             prompt_input = gr.Textbox(
                 label="Lesson Prompt",
