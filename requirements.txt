@@ -15,4 +15,5 @@ moviepy # For video editing and combining elements
 posthog  # For monitoring
 fal-client
 typing
+mistralai
 

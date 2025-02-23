@@ -26,13 +26,16 @@ class ImageAgent:
         stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to'}
         return list(words - stop_words)
 
-    def generate_images(self, text: str, age: int) -> List[Image.Image]:
+    def generate_images(self, text: str, age: int, content_labels: List[str] = None) -> List[Image.Image]:
         try:
-            keywords = self._extract_keywords(text)
+            # Use provided content labels if available, otherwise extract keywords
+            keywords = content_labels if content_labels else self._extract_keywords(text)
             images = []
             
             for keyword in keywords[:5]:
-                prompt = f"Educational illustration for {age} year olds about {keyword}, digital art style,  friendly, colorful"
+                # Remove '#' if present in the keyword
+                keyword = keyword.replace('#', '') if keyword.startswith('#') else keyword
+                prompt = f"Educational illustration for {age} year olds about {keyword}, digital art style, friendly, colorful"
                 try:
                     # Get image URLs from FalService
                     image_urls = self.service.generate_images(

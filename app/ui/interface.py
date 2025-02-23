@@ -8,6 +8,56 @@ from app.agents.video_agent import VideoAgent
 from app.agents.audio_agent import AudioAgent
 from app.utils.error_handling import ErrorHandler
 from app.utils.output_manager import OutputManager
+from app.utils.label_generator import generate_content_labels  # Add this import
+
+# Define custom CSS before the interface creation
+custom_css = """
+    .gradio-container {    
+        font-family: "Georgia", serif;
+    }
+    
+    .gradio-title {
+        font-family: "Quicksand", sans-serif;
+        color: #2a4494;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .banner-image {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .input-row {
+        margin: 20px 0;
+    }
+    
+    .button-primary {
+        background-color: #2a4494;
+        color: white;
+    }
+    
+    .status-box {
+        border: 1px solid #eee;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 4px;
+    }
+    
+    .content-output {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+    }
+"""
 
 logger = logging.getLogger(__name__)
 error_handler = ErrorHandler()
@@ -42,10 +92,19 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False,
             age, 
             prompt
         )
-        content_path = OutputManager.save_text_output(request_id, content)
+        
+        # Generate content labels before saving content
+        content_labels = generate_content_labels(content)
+        logger.info(f"Generated content labels: {content_labels}")
+        
+        # Append content labels to the content before saving
+        formatted_labels = "\n\nLabels: " + ", ".join(content_labels)
+        content_with_labels = content + formatted_labels
+        
+        content_path = OutputManager.save_text_output(request_id, content_with_labels)
         progress["content"] = "Content generated successfully"
         
-        # Conditionally generate images
+        # Conditionally generate images using content labels
         images = []
         image_paths = []
         if images_needed:
@@ -54,7 +113,8 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False,
             images = error_handler.api_call_with_retry(
                 image_agent.generate_images,
                 content, 
-                age
+                age,
+                content_labels  # Pass the labels to image agent
             )
             image_paths = OutputManager.save_images_output(request_id, images)
             progress["images"] = f"Images generated successfully and saved to {output_paths['images']}"
@@ -114,7 +174,25 @@ def start_generation_workflow(age: int, prompt: str, video_needed: bool = False,
         return [gr.update(value="An unexpected error occurred")] * 8
 
 def create_interface():
-    with gr.Blocks(title="Educational Content Generator") as demo:
+    with gr.Blocks(
+        title="Educational Content Generator",
+        css=custom_css,
+        theme=gr.themes.Soft(
+            primary_hue="blue",
+            secondary_hue="purple",
+        )
+    ) as demo:        
+
+        with gr.Row(equal_height=True, elem_classes="banner-container"):
+            gr.Image(
+                value="./app/images/edubyte2.jpeg",  # Add the image path
+                show_label=False,
+                height=150,
+                width=150,
+                show_download_button=False,
+                container=False,
+                elem_classes="banner-image"
+            )
         gr.Markdown("## AI-Powered Educational Content Creator")
         
         with gr.Row():
